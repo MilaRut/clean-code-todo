@@ -1,5 +1,5 @@
 const taskInput = document.getElementById('new-task');
-const addButton = document.getElementsByTagName('button')[0];
+const addButton = document.querySelector('.task-row-wrapper button');
 const incompleteTaskList = document.getElementById('incompleteTasks');
 const completedTaskList = document.getElementById('completed-tasks');
 
