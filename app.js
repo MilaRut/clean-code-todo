@@ -1,9 +1,9 @@
 const taskInput = document.getElementById('new-task');
 const addButton = document.getElementsByTagName('button')[0];
-const incompleteTaskHolder = document.getElementById('incompleteTasks');
-const completedTasksHolder = document.getElementById('completed-tasks');
+const incompleteTaskList = document.getElementById('incompleteTasks');
+const completedTaskList = document.getElementById('completed-tasks');
 
-const createNewTaskElement = function (taskString) {
+const createTaskElement = function (taskText) {
   const listItem = document.createElement('li');
 
   const checkBox = document.createElement('input');
@@ -15,7 +15,7 @@ const createNewTaskElement = function (taskString) {
   const deleteButtonImg = document.createElement('img');
 
   // innerText, not innerHTML: the task text comes from the user and must not be parsed as markup.
-  label.innerText = taskString;
+  label.innerText = taskText;
   label.className = 'task';
 
   checkBox.type = 'checkbox';
@@ -39,27 +39,27 @@ const createNewTaskElement = function (taskString) {
 
 const addTask = function () {
   if (!taskInput.value) return;
-  const listItem = createNewTaskElement(taskInput.value);
+  const listItem = createTaskElement(taskInput.value);
 
-  incompleteTaskHolder.appendChild(listItem);
-  bindTaskEvents(listItem, taskCompleted);
+  incompleteTaskList.appendChild(listItem);
+  bindTaskEvents(listItem, completeTask);
 
   taskInput.value = '';
 };
 
-const editTask = function () {
+const toggleEditMode = function () {
   const listItem = this.parentNode;
 
   const editInput = listItem.querySelector('input[type=text]');
   const label = listItem.querySelector('label');
-  const editBtn = listItem.querySelector('.edit');
-  const containsClass = listItem.classList.contains('editMode');
-  if (containsClass) {
+  const editButton = listItem.querySelector('.edit');
+  const isEditMode = listItem.classList.contains('editMode');
+  if (isEditMode) {
     label.innerText = editInput.value;
-    editBtn.innerText = 'Edit';
+    editButton.innerText = 'Edit';
   } else {
     editInput.value = label.innerText;
-    editBtn.innerText = 'Save';
+    editButton.innerText = 'Save';
   }
 
   listItem.classList.toggle('editMode');
@@ -67,41 +67,41 @@ const editTask = function () {
 
 const deleteTask = function () {
   const listItem = this.parentNode;
-  const ul = listItem.parentNode;
-  ul.removeChild(listItem);
+  const taskList = listItem.parentNode;
+  taskList.removeChild(listItem);
 };
 
-const taskCompleted = function () {
+const completeTask = function () {
   const listItem = this.parentNode;
-  completedTasksHolder.appendChild(listItem);
-  bindTaskEvents(listItem, taskIncomplete);
+  completedTaskList.appendChild(listItem);
+  bindTaskEvents(listItem, reopenTask);
 };
 
-const taskIncomplete = function () {
+const reopenTask = function () {
   const listItem = this.parentNode;
-  incompleteTaskHolder.appendChild(listItem);
-  bindTaskEvents(listItem, taskCompleted);
+  incompleteTaskList.appendChild(listItem);
+  bindTaskEvents(listItem, completeTask);
 };
 
 addButton.addEventListener('click', addTask);
 
-const bindTaskEvents = function (taskListItem, checkBoxEventHandler) {
-  const checkBox = taskListItem.querySelector('input[type=checkbox]');
-  const editButton = taskListItem.querySelector('button.edit');
-  const deleteButton = taskListItem.querySelector('button.delete');
+const bindTaskEvents = function (listItem, onCheckboxChange) {
+  const checkBox = listItem.querySelector('input[type=checkbox]');
+  const editButton = listItem.querySelector('button.edit');
+  const deleteButton = listItem.querySelector('button.delete');
 
   // Handlers are assigned to on* properties, not added with addEventListener:
   // a task is rebound every time it moves between lists, and assignment
   // replaces the previous handler instead of stacking another one.
-  editButton.onclick = editTask;
+  editButton.onclick = toggleEditMode;
   deleteButton.onclick = deleteTask;
-  checkBox.onchange = checkBoxEventHandler;
+  checkBox.onchange = onCheckboxChange;
 };
 
-for (let i = 0; i < incompleteTaskHolder.children.length; i++) {
-  bindTaskEvents(incompleteTaskHolder.children[i], taskCompleted);
+for (let i = 0; i < incompleteTaskList.children.length; i++) {
+  bindTaskEvents(incompleteTaskList.children[i], completeTask);
 }
 
-for (let i = 0; i < completedTasksHolder.children.length; i++) {
-  bindTaskEvents(completedTasksHolder.children[i], taskIncomplete);
+for (let i = 0; i < completedTaskList.children.length; i++) {
+  bindTaskEvents(completedTaskList.children[i], reopenTask);
 }
