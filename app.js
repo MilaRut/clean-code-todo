@@ -37,12 +37,16 @@ const createTaskElement = function (taskText) {
   return listItem;
 };
 
+const appendTaskToList = function (listItem, taskList, onCheckboxChange) {
+  taskList.appendChild(listItem);
+  bindTaskEvents(listItem, onCheckboxChange);
+};
+
 const addTask = function () {
   if (!taskInput.value) return;
   const listItem = createTaskElement(taskInput.value);
 
-  incompleteTaskList.appendChild(listItem);
-  bindTaskEvents(listItem, completeTask);
+  appendTaskToList(listItem, incompleteTaskList, completeTask);
 
   taskInput.value = '';
 };
@@ -72,15 +76,11 @@ const deleteTask = function () {
 };
 
 const completeTask = function () {
-  const listItem = this.parentNode;
-  completedTaskList.appendChild(listItem);
-  bindTaskEvents(listItem, reopenTask);
+  appendTaskToList(this.parentNode, completedTaskList, reopenTask);
 };
 
 const reopenTask = function () {
-  const listItem = this.parentNode;
-  incompleteTaskList.appendChild(listItem);
-  bindTaskEvents(listItem, completeTask);
+  appendTaskToList(this.parentNode, incompleteTaskList, completeTask);
 };
 
 addButton.addEventListener('click', addTask);
