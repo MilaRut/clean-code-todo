@@ -3,37 +3,36 @@ const addButton = document.querySelector('.task-row-wrapper button');
 const incompleteTaskList = document.getElementById('incompleteTasks');
 const completedTaskList = document.getElementById('completed-tasks');
 
-const createTaskElement = function (taskText) {
-  const listItem = document.createElement('li');
-
-  const checkBox = document.createElement('input');
-  const label = document.createElement('label');
-  const editInput = document.createElement('input');
-  const editButton = document.createElement('button');
-
+const createDeleteButton = function () {
   const deleteButton = document.createElement('button');
-  const deleteButtonImg = document.createElement('img');
+  deleteButton.className = 'delete';
 
+  const icon = document.createElement('img');
+  icon.src = './remove.svg';
+  deleteButton.appendChild(icon);
+
+  return deleteButton;
+};
+
+const createTaskElement = function (taskText) {
+  const checkBox = document.createElement('input');
+  checkBox.type = 'checkbox';
+
+  const label = document.createElement('label');
+  label.className = 'task';
   // innerText, not innerHTML: the task text comes from the user and must not be parsed as markup.
   label.innerText = taskText;
-  label.className = 'task';
 
-  checkBox.type = 'checkbox';
+  const editInput = document.createElement('input');
   editInput.type = 'text';
   editInput.className = 'task';
 
-  editButton.innerText = 'Edit';
+  const editButton = document.createElement('button');
   editButton.className = 'edit';
+  editButton.innerText = 'Edit';
 
-  deleteButton.className = 'delete';
-  deleteButtonImg.src = './remove.svg';
-  deleteButton.appendChild(deleteButtonImg);
-
-  listItem.appendChild(checkBox);
-  listItem.appendChild(label);
-  listItem.appendChild(editInput);
-  listItem.appendChild(editButton);
-  listItem.appendChild(deleteButton);
+  const listItem = document.createElement('li');
+  listItem.append(checkBox, label, editInput, editButton, createDeleteButton());
   return listItem;
 };
 
