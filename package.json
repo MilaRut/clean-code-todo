@@ -1,0 +1,26 @@
+{
+  "name": "clean-code-todo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Todo app refactored with Clean Code principles",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.js": "eslint --max-warnings=0",
+    "*": "prettier --check --ignore-unknown"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.13.0",
+    "globals": "^17.13.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.9.10"
+  }
+}
