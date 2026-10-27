@@ -1,11 +1,11 @@
 const taskInput = document.getElementById('new-task');
-const addButton = document.querySelector('.task-row-wrapper button');
-const incompleteTaskList = document.getElementById('incompleteTasks');
+const addButton = document.querySelector('.new-task-row button');
+const incompleteTaskList = document.getElementById('incomplete-tasks');
 const completedTaskList = document.getElementById('completed-tasks');
 
 const createDeleteButton = function () {
   const deleteButton = document.createElement('button');
-  deleteButton.className = 'delete';
+  deleteButton.className = 'delete-button';
 
   const icon = document.createElement('img');
   icon.src = './remove.svg';
@@ -19,16 +19,16 @@ const createTaskElement = function (taskText) {
   checkBox.type = 'checkbox';
 
   const label = document.createElement('label');
-  label.className = 'task';
+  label.className = 'task-text';
   // innerText, not innerHTML: the task text comes from the user and must not be parsed as markup.
   label.innerText = taskText;
 
   const editInput = document.createElement('input');
   editInput.type = 'text';
-  editInput.className = 'task';
+  editInput.className = 'task-text';
 
   const editButton = document.createElement('button');
-  editButton.className = 'edit';
+  editButton.className = 'edit-button';
   editButton.innerText = 'Edit';
 
   const listItem = document.createElement('li');
@@ -55,8 +55,8 @@ const toggleEditMode = function () {
 
   const editInput = listItem.querySelector('input[type=text]');
   const label = listItem.querySelector('label');
-  const editButton = listItem.querySelector('.edit');
-  const isEditMode = listItem.classList.contains('editMode');
+  const editButton = listItem.querySelector('.edit-button');
+  const isEditMode = listItem.classList.contains('edit-mode');
   if (isEditMode) {
     label.innerText = editInput.value;
     editButton.innerText = 'Edit';
@@ -65,7 +65,7 @@ const toggleEditMode = function () {
     editButton.innerText = 'Save';
   }
 
-  listItem.classList.toggle('editMode');
+  listItem.classList.toggle('edit-mode');
 };
 
 const deleteTask = function () {
@@ -86,8 +86,8 @@ addButton.addEventListener('click', addTask);
 
 const bindTaskEvents = function (listItem, onCheckboxChange) {
   const checkBox = listItem.querySelector('input[type=checkbox]');
-  const editButton = listItem.querySelector('button.edit');
-  const deleteButton = listItem.querySelector('button.delete');
+  const editButton = listItem.querySelector('.edit-button');
+  const deleteButton = listItem.querySelector('.delete-button');
 
   // Handlers are assigned to on* properties, not added with addEventListener:
   // a task is rebound every time it moves between lists, and assignment
